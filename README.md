@@ -17,4 +17,4 @@ Zod
 ```yarn install```
 
 - generete prisma 
-```npx generete prisma```
+```npx prisma generate```
