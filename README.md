@@ -9,4 +9,12 @@ Express
 Prisma 
 Zod
 
-## 
+## Getting started
+- install
+```git clone git@github.com:alugibaN/Eatly-backend.git```
+
+- install dependencies
+```yarn install```
+
+- generete prisma 
+```npx generete prisma```
