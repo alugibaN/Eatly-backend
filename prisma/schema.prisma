@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+generator zod {
+  provider                 = "zod-prisma"
+  output                   = "./zod" // (default) the directory where generated zod schemas will be saved
+
+  relationModel            = true // (default) Create and export both plain and related models.
+  // relationModel         = "default" // Do not export model without relations.
+  // relationModel         = false // Do not generate related model
+
+  modelCase                = "PascalCase" // (default) Output models using pascal case (ex. UserModel, PostModel)
+  // modelCase             = "camelCase" // Output models using camel case (ex. userModel, postModel)
+
+  modelSuffix              = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
+
+  // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
+  useDecimalJs             = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
+
+  // imports                  = null // (default) will import the referenced file in generated schemas to be used via imports.someExportedVariable
+
+  // https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+  prismaJsonNullability    = true // (default) uses prisma's scheme for JSON field nullability
+  // prismaJsonNullability = false // allows null assignment to optional JSON fields
+}
+
+
+// generator zod {
+//   provider              = "zod-prisma"
+//   output                = "./zod"
+//   modelCase             = "PascalCase"
+//   modelSuffix           = "Model"
+//   prismaJsonNullability = "true"
+//   relationModel         = "true"
+//   useDecimalJs          = "true"
+// }
+
+
+model User {
+  id                  String          @id @default(cuid())
+  email               String          @unique
+  password            String
+  name                String
+  avatar              String?
+  role                Role            @default(USER)
+  gender              Gender
+  orders              Orders[]
+  posts               Posts[]
+  wallets             Wallets[]
+  updateAt            DateTime        @updatedAt
+  createdAt           DateTime        @default(now())
+}
+
+model Posts {
+  id                 String           @id @default(cuid())
+  title              String
+  text               String
+  img                String           @default("https://i.pinimg.com/736x/42/0c/dc/420cdc8f4f03a3a00768474415b2b437.jpg")
+  userID             String
+  autor              User             @relation(fields: [userID], references: [id])
+  updateAt           DateTime         @updatedAt
+  createdAt          DateTime         @default(now())
+}
+
+model Wallets {
+  id                String            @id @default(cuid())
+  value             String
+  userID            String
+  user              User              @relation(fields: [userID], references: [id])
+}
+
+model Restaurants {
+  id                String            @id @default(cuid())
+  name              String            @unique
+  TimeReady         Int
+  star              Int               @default(0)
+  category          CategoryDishOrRest
+  dishes            Dishes[]
+  updateAt          DateTime          @updatedAt
+  createdAt         DateTime          @default(now())
+}
+
+model Orders {
+  id                String            @id @default(cuid())
+  amount            Float
+  status            String
+  deliverStatus     String
+  order             Int               @default(autoincrement())
+  restauran         String
+  dishes            String[]
+  user              User              @relation(fields: [userID], references: [id])
+  userID            String
+  address           String
+  updateAt          DateTime          @updatedAt
+  createdAt         DateTime          @default(now())
+}
+
+model Dishes {
+  id                String            @id @default(cuid())
+  name              String
+  timeReady         BigInt
+  star              BigInt            @default(0)
+  cost              BigInt
+  img               String
+  restauranеID      String
+  category          CategoryDishOrRest    
+  restauranе        Restaurants       @relation(fields: [restauranеID], references: [id])
+  updateAt          DateTime          @updatedAt
+  createdAt         DateTime          @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MEN
+  WOMAN
+}
+
+enum CategoryDishOrRest {
+  Pizza
+  Asian
+  Donat
+  Ice
+  Chiken
+  Spacy
+}
