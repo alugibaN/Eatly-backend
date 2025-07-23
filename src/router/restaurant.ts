@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { createRestaurant, getAllRestaurant } from "@/controller/restaurant";
-import { getTopRestaurant } from "@/service/restaurant";
+import { createRestaurant, getAllRestaurant, getTopRestaurant } from "@/controller/restaurant";
 
 const restaurantRouter = Router();
 

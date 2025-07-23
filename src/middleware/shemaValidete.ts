@@ -40,7 +40,6 @@ export const validateUserParams = (schema: z.ZodType) => async (req:Request, res
   //     error.errors = err.issues;
   //     return next(error);
   //   }
-  //   console.log(222);
   //   next(err);
   // }
 };
@@ -49,7 +48,6 @@ export const validateUserParams = (schema: z.ZodType) => async (req:Request, res
 // if(!use.success){
 //   let str =''
 //   let mm = use.error.errors.forEach((acc:string,el:Error) => str+=el["message"])
-//    console.log(str)
 //   }    // if(!use.success)   console.log(use.error.issues);
       // throw new Error("Error")
       //  console.log(use.error.flatten())

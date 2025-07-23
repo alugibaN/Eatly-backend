@@ -1,3 +1,4 @@
+import { ErrorFind } from "@/utils/error/errorFind";
 import { Dishes, PrismaClient } from "@prisma/client";
 
 
@@ -9,7 +10,7 @@ export const createDish = async (dish: Dishes) => {
     });
   
     if (!restaurantExists) {
-      throw new Error("Ресторан с указанным ID не найден");
+      throw new ErrorFind("Ресторан с указанным ID не найден");
     }
   
     return await prisma.dishes.create({ data: dish });
