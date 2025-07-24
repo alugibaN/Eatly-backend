@@ -1,7 +1,7 @@
-import { PrismaClient, User } from "@prisma/client";
+import prisma from "@/lib/prisma";
+import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient
 
 const womenAvatar = [
   "https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/c2936e169621289.645022f4995bf.jpg",

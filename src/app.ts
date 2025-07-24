@@ -41,8 +41,16 @@ async function main() {
 
   app.use(errorLogger);
 
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(577).send(`Message ${err.message}`);
+interface NetworkError extends Error {  
+    statusCode: number;  
+}  
+
+  app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => {
+    const { statusCode = 500,  message } = err
+    
+
+
+    res.status(statusCode).send(message);
   });
 
   app.listen(PORT, () => {

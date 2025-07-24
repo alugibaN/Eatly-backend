@@ -1,8 +1,7 @@
-import { ErrorFind } from "@/utils/error/errorFind";
+import prisma from "@/lib/prisma";
+import { ErrorFind } from "@/utils/error/erorFind";
 import { ErrorValidation } from "@/utils/error/errorValidation";
-import { PrismaClient, User } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { User } from "@prisma/client";
 
 export const getProfileData = async (userID: string) => {
   const newUser = await prisma.user.findFirst({

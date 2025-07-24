@@ -1,15 +1,12 @@
-import { ErrorAuth } from "@/utils/error/errorAuth";
-import { ErrorForbidden } from "@/utils/error/ErrorForbidden ";
+import prisma from "@/lib/prisma";
+import { ErrorForbidden } from "@/utils/error/errorForbidden ";
 import { ErrorValidation } from "@/utils/error/errorValidation";
-import { PrismaClient, Restaurants } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import { Restaurants } from "@prisma/client";
 
 export const createRestaurant = async (rest: Restaurants, userID: string) => {
-  const { name, category, TimeReady, star } = rest;
-
   const checkRest = await prisma.restaurants.findFirst({
-    where: { name: name },
+    where: { name: rest.name },
   });
   if (checkRest) throw new ErrorValidation("Название ресторана занято");
   if (userID) {
@@ -27,7 +24,6 @@ export const createRestaurant = async (rest: Restaurants, userID: string) => {
 };
 
 export const getAllRestaurant = async () => await prisma.restaurants.findMany();
-
 
 export const getTopRestaurant = async () =>
   await prisma.restaurants.findMany({

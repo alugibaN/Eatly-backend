@@ -7,7 +7,7 @@ export const getProfileData = async (
   next: NextFunction
 ) => {
   try {
-    const dataProfile = await ProfileService.getProfileData(req.body.user.userID);
+    const dataProfile = await ProfileService.getProfileData(req.body.userID);
     res.status(200).json(dataProfile)
   } catch (err) {
     next(err);
@@ -20,8 +20,9 @@ export const editProfileData = async (
   next: NextFunction
 ) => {
   try {
-    const { user, ...etherParamsUser } = req.body;
-    const profile = await ProfileService.editProfileData(user.userID, etherParamsUser);
+    const { userID, ...etherParamsUser } = req.body;
+    console.log();
+    const profile = await ProfileService.editProfileData(userID, etherParamsUser);
     res.status(200).json(profile)
   } catch (err) {
     next(err);
