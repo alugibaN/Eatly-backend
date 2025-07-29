@@ -6,7 +6,7 @@ export const RestaurantsModel = z.object({
   id: z.string(),
   name: z.string(),
   TimeReady: z.number().int(),
-  star: z.number().int(),
+  star: z.number(),
   category: z.nativeEnum(CategoryDishOrRest),
   updateAt: z.date(),
   createdAt: z.date(),

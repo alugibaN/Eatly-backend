@@ -6,7 +6,7 @@ export const DishesModel = z.object({
   id: z.string(),
   name: z.string(),
   timeReady: z.bigint(),
-  star: z.bigint(),
+  star: z.number(),
   cost: z.bigint(),
   img: z.string(),
   restauranеID: z.string(),

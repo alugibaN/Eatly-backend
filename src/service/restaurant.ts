@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import { ErrorForbidden } from "@/utils/error/errorForbidden ";
 import { ErrorValidation } from "@/utils/error/errorValidation";
-
 import { Restaurants } from "@prisma/client";
 
 export const createRestaurant = async (rest: Restaurants, userID: string) => {

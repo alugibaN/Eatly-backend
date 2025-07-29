@@ -13,7 +13,6 @@ export const createRestaurant = async (
     );
     res.status(200).json(restaurant);
   } catch (err) {
-    // console.error("Error in createRestaurant:", err);
     next(err);
   }
 };

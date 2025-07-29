@@ -12,6 +12,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 
@@ -87,7 +88,7 @@ model Restaurants {
   id                String            @id @default(cuid())
   name              String            @unique
   TimeReady         Int
-  star              Int               @default(0)
+  star              Float               @default(0)
   category          CategoryDishOrRest
   dishes            Dishes[]
   updateAt          DateTime          @updatedAt
@@ -113,7 +114,7 @@ model Dishes {
   id                String            @id @default(cuid())
   name              String
   timeReady         BigInt
-  star              BigInt            @default(0)
+  star              Float            @default(0)
   cost              BigInt
   img               String
   restauranеID      String

@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import { ErrorFind } from "@/utils/error/erorFind";
 import { Dishes } from "@prisma/client";
 
-
 export const createDish = async (dish: Dishes) => {
   const restaurantExists = await prisma.restaurants.findUnique({
     where: { id: dish.restauranеID },
@@ -15,19 +14,12 @@ export const createDish = async (dish: Dishes) => {
   return await prisma.dishes.create({ data: dish });
 };
 
-
-
-
-
-
-
 export const updateDish = async (dish: Dishes) => {
   // const findDish = await prisma.dishes.update({
   //   where: {
   //     id: dish.id
   //   }
   // })
-
 
   const cheangeDish = await prisma.dishes.update({
     where: {
@@ -38,15 +30,6 @@ export const updateDish = async (dish: Dishes) => {
   return cheangeDish;
 };
 
-
-
-
-
-
-
-
-
-
 export interface MyQueryParams {
   category?: string;
   minPrice?: number;
@@ -54,16 +37,6 @@ export interface MyQueryParams {
   page?: string;
   limit?: string;
 }
-
-
-
-
-
-
-
-
-
-
 
 export const getManyDishes = async (query: MyQueryParams) => {
   const whereClause: Record<string, any> = {};
@@ -90,10 +63,6 @@ export const getManyDishes = async (query: MyQueryParams) => {
     skip,
   });
 };
-
-
-
-
 
 export const getFiveTopDish = async () =>
   await prisma.dishes.findMany({

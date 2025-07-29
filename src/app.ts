@@ -26,32 +26,33 @@ async function main() {
   // app.use(requestLogger);
 
   app.use("/user", authRouter);
-  app.get("/testing", async (req, res) => { throw new Error("Something broke!");});
+  app.get("/testing", async (req, res) => {
+    throw new Error("Something broke!");
+  });
 
+  app.use(authMiddleware);
   app.use("/restaurant", restaurantRouter);
   app.use("/dish", dishRouter);
 
-  app.use(authMiddleware);
-  
   app.use("/profile", profileRoter);
-  app.use("/order", orderRout)
+  app.use("/order", orderRout);
   app.all("*", (req, res) => {
     res.status(404).json({ message: "Not Found" });
   });
 
   app.use(errorLogger);
 
-interface NetworkError extends Error {  
-    statusCode: number;  
-}  
+  interface NetworkError extends Error {
+    statusCode: number;
+  }
 
-  app.use((err: NetworkError, req: Request, res: Response, next: NextFunction) => {
-    const { statusCode = 500,  message } = err
-    
+  app.use(
+    (err: NetworkError, req: Request, res: Response, next: NextFunction) => {
+      const { statusCode = 500, message } = err;
 
-
-    res.status(statusCode).send(message);
-  });
+      res.status(statusCode).send(message);
+    }
+  );
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
