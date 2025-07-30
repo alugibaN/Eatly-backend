@@ -5,6 +5,7 @@ import { CompleteDishes, RelatedDishesModel } from "./index"
 export const RestaurantsModel = z.object({
   id: z.string(),
   name: z.string(),
+  img: z.string(),
   TimeReady: z.number().int(),
   star: z.number(),
   category: z.nativeEnum(CategoryDishOrRest),

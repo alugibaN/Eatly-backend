@@ -39,18 +39,6 @@ generator zod {
   // prismaJsonNullability = false // allows null assignment to optional JSON fields
 }
 
-
-// generator zod {
-//   provider              = "zod-prisma"
-//   output                = "./zod"
-//   modelCase             = "PascalCase"
-//   modelSuffix           = "Model"
-//   prismaJsonNullability = "true"
-//   relationModel         = "true"
-//   useDecimalJs          = "true"
-// }
-
-
 model User {
   id                  String          @id @default(cuid())
   email               String          @unique
@@ -85,14 +73,15 @@ model Wallets {
 }
 
 model Restaurants {
-  id                String            @id @default(cuid())
-  name              String            @unique
+  id                String              @id @default(cuid())
+  name              String              @unique
+  img               String              
   TimeReady         Int
   star              Float               @default(0)
   category          CategoryDishOrRest
   dishes            Dishes[]
-  updateAt          DateTime          @updatedAt
-  createdAt         DateTime          @default(now())
+  updateAt          DateTime            @updatedAt
+  createdAt         DateTime            @default(now())
 }
 
 model Orders {

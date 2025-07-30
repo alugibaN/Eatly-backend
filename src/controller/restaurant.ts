@@ -6,11 +6,9 @@ export const createRestaurant = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { userID, ...rest } = req.body;
   try {
-    const restaurant = await RestaurantService.createRestaurant(
-      req.body,
-      req.body.user.userID
-    );
+    const restaurant = await RestaurantService.createRestaurant(rest, userID);
     res.status(200).json(restaurant);
   } catch (err) {
     next(err);

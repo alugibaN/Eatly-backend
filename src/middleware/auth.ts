@@ -8,7 +8,6 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    console.log(123);
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       throw new ErrorAuth("Authorization header is missing or invalid");

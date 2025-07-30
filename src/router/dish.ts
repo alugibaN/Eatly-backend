@@ -7,7 +7,6 @@ dishRouter.post("/", createDish);
 dishRouter.get("/", getManyDishes );
 dishRouter.patch("/", updateDish );
 dishRouter.get("/top-dishes", getFiveTopDish );
-// dishRouter.get("/category", findParams)
 
 
 export default dishRouter;
