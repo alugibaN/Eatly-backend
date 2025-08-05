@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as userService from "../service/auth";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { access } from "fs";
+// import { access } from "fs";
 dotenv.config();
 
 export const createUser = async (

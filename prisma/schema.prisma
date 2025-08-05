@@ -40,77 +40,93 @@ generator zod {
 }
 
 model User {
-  id                  String          @id @default(cuid())
-  email               String          @unique
+  id                  String            @id @default(cuid())
+  email               String            @unique
   password            String
   name                String
   avatar              String?
-  role                Role            @default(USER)
+  role                Role              @default(USER)
   gender              Gender
   orders              Orders[]
   posts               Posts[]
-  wallets             Wallets[]
-  updateAt            DateTime        @updatedAt
-  createdAt           DateTime        @default(now())
+  wallets             Wallets[] 
+  Favorites           Favorites[]
+  updateAt            DateTime          @updatedAt
+  createdAt           DateTime          @default(now())
+}
+model Favorites {
+  id                  Int               @id @default(autoincrement())
+  userID              String
+  user                User              @relation(fields: [userID], references: [id])
+  dishID              String            
+  dish                Dishes?           @relation(fields: [dishID], references: [id])
+  restaurantID        String              
+  restaurant          Restaurants?      @relation(fields: [restaurantID], references: [id])
+  createdAt           DateTime          @default(now())
+  
+  @@unique([userID, dishID, restaurantID])
 }
 
+
 model Posts {
-  id                 String           @id @default(cuid())
-  title              String
-  text               String
-  img                String           @default("https://i.pinimg.com/736x/42/0c/dc/420cdc8f4f03a3a00768474415b2b437.jpg")
-  userID             String
-  autor              User             @relation(fields: [userID], references: [id])
-  updateAt           DateTime         @updatedAt
-  createdAt          DateTime         @default(now())
+  id                  String            @id @default(cuid())
+  title               String
+  text                String
+  img                 String            @default("https://i.pinimg.com/736x/42/0c/dc/420cdc8f4f03a3a00768474415b2b437.jpg")
+  userID              String
+  autor               User              @relation(fields: [userID], references: [id])
+  updateAt            DateTime          @updatedAt
+  createdAt           DateTime          @default(now())
 }
 
 model Wallets {
-  id                String            @id @default(cuid())
-  value             String
-  userID            String
-  user              User              @relation(fields: [userID], references: [id])
+  id                  String            @id @default(cuid())
+  value               String
+  userID              String
+  user                User              @relation(fields: [userID], references: [id])
 }
 
 model Restaurants {
-  id                String              @id @default(cuid())
-  name              String              @unique
-  img               String              
-  TimeReady         Int
-  star              Float               @default(0)
-  category          CategoryDishOrRest
-  dishes            Dishes[]
-  updateAt          DateTime            @updatedAt
-  createdAt         DateTime            @default(now())
-}
+  id                  String            @id @default(cuid())
+  name                String            @unique
+  img                 String              
+  deliveryTime        Int 
+  rating              Float             @default(0)
+  category            CategoryDishOrRest
+  dishes              Dishes[]
+  Favorites           Favorites[]
+  updateAt            DateTime          @updatedAt
+  createdAt           DateTime          @default(now())
+} 
 
 model Orders {
-  id                String            @id @default(cuid())
-  amount            Float
-  status            String
-  deliverStatus     String
-  order             Int               @default(autoincrement())
-  restauran         String
-  dishes            String[]
-  user              User              @relation(fields: [userID], references: [id])
-  userID            String
-  address           String
-  updateAt          DateTime          @updatedAt
-  createdAt         DateTime          @default(now())
+  id                  String            @id @default(cuid())
+  amount              Float
+  status              String
+  deliverStatus       String
+  order               Int               @default(autoincrement())
+  restaurant          String
+  dishes              String[]
+  user                User              @relation(fields: [userID], references: [id])
+  userID              String
+  address             String
+  updateAt            DateTime          @updatedAt
+  createdAt           DateTime          @default(now())
 }
 
 model Dishes {
-  id                String            @id @default(cuid())
-  name              String
-  timeReady         BigInt
-  star              Float            @default(0)
-  cost              BigInt
-  img               String
-  restauranеID      String
-  category          CategoryDishOrRest    
-  restauranе        Restaurants       @relation(fields: [restauranеID], references: [id])
-  updateAt          DateTime          @updatedAt
-  createdAt         DateTime          @default(now())
+  id                  String            @id @default(cuid())
+  name                String            @default("24 min")
+  deliveryTime        BigInt
+  rating              Float             
+  cost                Float
+  img                 String
+  restauranеID        String
+  category            CategoryDishOrRest    
+  restaurant          Restaurants       @relation(fields: [restauranеID], references: [id])
+  updateAt            DateTime          @updatedAt
+  createdAt           DateTime          @default(now())
+  Favorites           Favorites[]
 }
 
 enum Role {

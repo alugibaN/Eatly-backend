@@ -1,4 +1,5 @@
 export * from "./user"
+export * from "./favorites"
 export * from "./posts"
 export * from "./wallets"
 export * from "./restaurants"

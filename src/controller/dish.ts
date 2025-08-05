@@ -49,7 +49,6 @@ export const getFiveTopDish = async (
     const dish = await ServiceDish.getFiveTopDish();
     res.status(200).json(dish);
   } catch (err) {
-    console.error("Error in createRestaurant:", err);
     next(err);
   }
 };

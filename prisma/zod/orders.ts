@@ -7,7 +7,7 @@ export const OrdersModel = z.object({
   status: z.string(),
   deliverStatus: z.string(),
   order: z.number().int(),
-  restauran: z.string(),
+  restaurant: z.string(),
   dishes: z.string().array(),
   userID: z.string(),
   address: z.string(),

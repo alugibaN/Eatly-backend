@@ -1,13 +1,13 @@
 import * as z from "zod"
 import { CategoryDishOrRest } from ".prisma/client"
-import { CompleteRestaurants, RelatedRestaurantsModel } from "./index"
+import { CompleteRestaurants, RelatedRestaurantsModel, CompleteFavorites, RelatedFavoritesModel } from "./index"
 
 export const DishesModel = z.object({
   id: z.string(),
   name: z.string(),
   timeReady: z.bigint(),
-  star: z.number(),
-  cost: z.bigint(),
+  rating: z.number(),
+  cost: z.number(),
   img: z.string(),
   restauranеID: z.string(),
   category: z.nativeEnum(CategoryDishOrRest),
@@ -16,7 +16,8 @@ export const DishesModel = z.object({
 })
 
 export interface CompleteDishes extends z.infer<typeof DishesModel> {
-  restauranе: CompleteRestaurants
+  restaurant: CompleteRestaurants
+  Favorites: CompleteFavorites[]
 }
 
 /**
@@ -25,5 +26,6 @@ export interface CompleteDishes extends z.infer<typeof DishesModel> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const RelatedDishesModel: z.ZodSchema<CompleteDishes> = z.lazy(() => DishesModel.extend({
-  restauranе: RelatedRestaurantsModel,
+  restaurant: RelatedRestaurantsModel,
+  Favorites: RelatedFavoritesModel.array(),
 }))
