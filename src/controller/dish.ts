@@ -14,13 +14,13 @@ export const createDish = async (
   }
 };
 
-export const getManyDishes = async (
-  req: Request<{}, {}, {}, ServiceDish.MyQueryParams>,
+export const GetFilteredDishes = async (
+  req: Request<{}, {}, {}, ServiceDish.QueryParams>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const dish = await ServiceDish.getManyDishes(req.query);
+    const dish = await ServiceDish.GetFilteredDishes(req.query);
     res.status(200).json(dish);
   } catch (err) {
     next(err);

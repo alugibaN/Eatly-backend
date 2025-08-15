@@ -8,11 +8,11 @@
 
 */
 -- AlterTable
-ALTER TABLE "Dishes" DROP COLUMN "timeReady",
-ADD COLUMN     "deliveryTime" BIGINT NOT NULL,
-ALTER COLUMN "name" SET DEFAULT '24 min',
-ALTER COLUMN "rating" DROP DEFAULT;
+ALTER TABLE "Dishes" RENAME COLUMN "timeReady" TO "deliveryTime";
+-- ADD COLUMN  "deliveryTime" BIGINT NOT NULL,
+-- ALTER COLUMN "name" SET DEFAULT '24 min',
+-- ALTER COLUMN "rating" DROP DEFAULT;
 
 -- AlterTable
-ALTER TABLE "Restaurants" DROP COLUMN "TimeReady",
-ADD COLUMN     "deliveryTime" INTEGER NOT NULL;
+ALTER TABLE "Restaurants" RENAME COLUMN "TimeReady" TO "deliveryTime";
+-- ADD COLUMN     "deliveryTime" INTEGER NOT NULL;

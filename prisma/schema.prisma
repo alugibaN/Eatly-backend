@@ -54,6 +54,7 @@ model User {
   updateAt            DateTime          @updatedAt
   createdAt           DateTime          @default(now())
 }
+ 
 model Favorites {
   id                  Int               @id @default(autoincrement())
   userID              String
@@ -92,23 +93,22 @@ model Restaurants {
   img                 String              
   deliveryTime        Int 
   rating              Float             @default(0)
-  category            CategoryDishOrRest
+  category            Categories[]
   dishes              Dishes[]
-  Favorites           Favorites[]
+  favorites           Favorites[]
   updateAt            DateTime          @updatedAt
   createdAt           DateTime          @default(now())
 } 
 
 model Orders {
   id                  String            @id @default(cuid())
-  amount              Float
-  status              String
-  deliverStatus       String
   order               Int               @default(autoincrement())
-  restaurant          String
-  dishes              String[]
   user                User              @relation(fields: [userID], references: [id])
   userID              String
+  restaurant          String
+  items               String[]
+  total               Float             
+  status              DeliverStatus
   address             String
   updateAt            DateTime          @updatedAt
   createdAt           DateTime          @default(now())
@@ -116,14 +116,14 @@ model Orders {
 
 model Dishes {
   id                  String            @id @default(cuid())
-  name                String            @default("24 min")
+  name                String           
   deliveryTime        BigInt
   rating              Float             
-  cost                Float
+  price               Float             
   img                 String
-  restauranеID        String
-  category            CategoryDishOrRest    
-  restaurant          Restaurants       @relation(fields: [restauranеID], references: [id])
+  restaurantID        String
+  category            Categories[]    
+  restaurant          Restaurants       @relation(fields: [restaurantID], references: [id])
   updateAt            DateTime          @updatedAt
   createdAt           DateTime          @default(now())
   Favorites           Favorites[]
@@ -138,12 +138,19 @@ enum Gender {
   MEN
   WOMAN
 }
+enum DeliverStatus {
+  inProcessing 
+  delivered
+  completed
+}
 
-enum CategoryDishOrRest {
+enum Categories {
+  Pickup
+  Burger
+  Sushi
   Pizza
   Asian
   Donat
   Ice
-  Chiken
   Spacy
 }

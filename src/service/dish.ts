@@ -1,28 +1,33 @@
 import prisma from "@/lib/prisma";
 import { ErrorFind } from "@/utils/error/erorFind";
 import { Dishes } from "@prisma/client";
-import { query } from "express";
-import { number, record } from "zod";
 
 export const createDish = async (dish: Dishes) => {
+  const { name, category, deliveryTime, rating, price, img, restauranеID } =
+    dish;
+
   const restaurantExists = await prisma.restaurants.findUnique({
-    where: { id: dish.restauranеID },
+    where: { id: restauranеID },
   });
 
   if (!restaurantExists) {
     throw new ErrorFind("Ресторан с указанным ID не найден");
   }
 
-  return await prisma.dishes.create({ data: dish });
+  return await prisma.dishes.create({
+    data: {
+      name,
+      category,
+      deliveryTime,
+      rating,
+      img,
+      restauranеID,
+      price
+    },
+  });
 };
 
 export const updateDish = async (dish: Dishes) => {
-  // const findDish = await prisma.dishes.update({
-  //   where: {
-  //     id: dish.id
-  //   }
-  // })
-
   const cheangeDish = await prisma.dishes.update({
     where: {
       id: dish.id,
@@ -30,10 +35,6 @@ export const updateDish = async (dish: Dishes) => {
     data: dish,
   });
   return cheangeDish;
-};
-export const getManyDishes = async (query: MyQueryParams) => {
-  const {} = query;
-  const whereClause: Record<string, string | number> = {};
 };
 
 export interface MyQueryParams {
@@ -65,84 +66,109 @@ export interface MyQueryParams {
  * @apiSuccess {Number} totalPages Общее количество страниц
  */
 
-interface QueryParams {
-  category?:       string;
-  minPrice?:       number;
-  maxPrice?:       number;
-  isVegan?:        boolean;
-  restaurantId?:   string;
-  sortBy:          "cost" | "rating" | "name" | "createdAt";
-  sortOrder:       "desc" | "asc";
-  limit?:          number;
-  page?:           number;
-  search?:         string;
+export interface QueryParams {
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  isVegan?: boolean;
+  restaurantID?: string;
+  sortBy: "cost" | "rating" | "name" | "createdAt";
+  sortOrder: "desc" | "asc";
+  limit?: number;
+  page?: number;
+  search?: string;
 }
 
 interface FilterObJ {
-  category?:       {  };
-  price?:          { gte?: number; ite?: number }
-  isVegan?:        boolean;
-  restaurantId?:   string;
-  sortBy?:         string;
-  sortOrder?:      string;
-  limit?:          number;
-  page?:           number;
-  name?:           {};
+  category?: {};
+  price?: { gte?: number; lte?: number };
+  isVegan?: boolean;
+  restaurantID?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  limit?: number;
+  page?: number;
+  name?: {};
 }
 
-
-
-const GetFilteredDishes = (query: QueryParams) => {
+export const GetFilteredDishes = async (query: QueryParams) => {
   const {
     category,
     minPrice,
     maxPrice,
     isVegan,
-    restaurantId,
+    restaurantID,
     sortBy = "rating",
     sortOrder = "desc",
     limit = 10,
     page = 1,
     search,
   } = query;
-  
-  const where: FilterObJ = {}
 
-  if(category) {
+  const where: FilterObJ = {};
+
+  if (category) {
     where.category = {
-      equal:  category,
-      mode: 'insensitive'
-    }; 
-  };
-  if(minPrice || maxPrice) {
-    where.price = {}
-    if(minPrice) where.price.gte = +minPrice
-    if(maxPrice) where.price.ite = +maxPrice
+      equals: category,
+      // mode: "insensitive",
+    };
   }
-  if(search){
+  if (minPrice || maxPrice) {
+    where.price = {};
+    if (minPrice) where.price.gte = +minPrice;
+    if (maxPrice) where.price.lte = +maxPrice;
+  }
+  if (search) {
     where.name = {
       contains: search,
-    }
+    };
   }
-  if(isVegan !== undefined) where.isVegan = isVegan                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-  if(restaurantId) where.restaurantId = restaurantId
+  if (isVegan !== undefined) where.isVegan = isVegan;
+  if (restaurantID) where.restaurantID = restaurantID;
 
-   const orderBy = {
-    [sortBy]: sortOrder
-   }
-   const take = +limit
-   const slimit = (+page -1) * limit
-  const dish = Promise.all( [prisma.dishes.findMany({
-    where
-  })
+  const orderBy = {
+    [sortBy]: sortOrder,
+  };
+  const take = +limit;
+  const skip = (+page - 1) * limit;
 
-}
+  const [dish, total] = await Promise.all([
+    prisma.dishes.findMany({
+      where,
+      orderBy,
+      take,
+      skip,
+      include: {
+        restaurant: {
+          select: {
+            id: true,
+            rating: true,
+            name: true,
+            deliveryTime: true,
+          },
+        },
+      },
+    }),
+    prisma.dishes.count({ where }),
+  ]);
+  const totalPages = Math.ceil(total / take);
 
+  return {
+    succes: true,
+    data: dish,
+    meta: {
+      total,
+      currentPage: page,
+      perPage: take,
+      totalPages,
+    },
+  };
+};
 
 export const getFiveTopDish = async () =>
   await prisma.dishes.findMany({
     orderBy: {
-      star: "desc",
+      rating: "desc",
     },
     take: 5,
   });

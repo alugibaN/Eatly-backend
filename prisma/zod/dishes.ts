@@ -1,16 +1,16 @@
 import * as z from "zod"
-import { CategoryDishOrRest } from ".prisma/client"
+import { Categories } from ".prisma/client"
 import { CompleteRestaurants, RelatedRestaurantsModel, CompleteFavorites, RelatedFavoritesModel } from "./index"
 
 export const DishesModel = z.object({
   id: z.string(),
   name: z.string(),
-  timeReady: z.bigint(),
+  deliveryTime: z.bigint(),
   rating: z.number(),
-  cost: z.number(),
+  price: z.number(),
   img: z.string(),
-  restauranеID: z.string(),
-  category: z.nativeEnum(CategoryDishOrRest),
+  restaurantID: z.string(),
+  category: z.nativeEnum(Categories).array(),
   updateAt: z.date(),
   createdAt: z.date(),
 })

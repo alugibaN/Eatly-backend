@@ -1,15 +1,15 @@
 import * as z from "zod"
+import { DeliverStatus } from ".prisma/client"
 import { CompleteUser, RelatedUserModel } from "./index"
 
 export const OrdersModel = z.object({
   id: z.string(),
-  amount: z.number(),
-  status: z.string(),
-  deliverStatus: z.string(),
   order: z.number().int(),
-  restaurant: z.string(),
-  dishes: z.string().array(),
   userID: z.string(),
+  restaurant: z.string(),
+  items: z.string().array(),
+  total: z.number(),
+  status: z.nativeEnum(DeliverStatus),
   address: z.string(),
   updateAt: z.date(),
   createdAt: z.date(),
