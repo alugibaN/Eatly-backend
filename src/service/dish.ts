@@ -3,11 +3,11 @@ import { ErrorFind } from "@/utils/error/erorFind";
 import { Dishes } from "@prisma/client";
 
 export const createDish = async (dish: Dishes) => {
-  const { name, category, deliveryTime, rating, price, img, restauranеID } =
+  const { name, category, deliveryTime, rating, price, img, restaurantID } =
     dish;
 
   const restaurantExists = await prisma.restaurants.findUnique({
-    where: { id: restauranеID },
+    where: { id: restaurantID },
   });
 
   if (!restaurantExists) {
@@ -17,11 +17,11 @@ export const createDish = async (dish: Dishes) => {
   return await prisma.dishes.create({
     data: {
       name,
-      category,
+      category ,
       deliveryTime,
       rating,
       img,
-      restauranеID,
+      restaurantID,
       price
     },
   });
@@ -45,26 +45,6 @@ export interface MyQueryParams {
   limit?: string;
 }
 
-/**
- * @api {get} /dishes Получить отфильтрованный список блюд
- * @apiName GetFilteredDishes
- * @apiGroup Dishes
- *
- * @apiParam {String} [category] Категория блюда
- * @apiParam {Number} [minPrice] Минимальная цена
- * @apiParam {Number} [maxPrice] Максимальная цена
- * @apiParam {Boolean} [isVegan] Вегетарианское блюдо
- * @apiParam {String} [restaurantId] ID ресторана
- * @apiParam {String="price","rating","name","createdAt"} [sortBy="createdAt"] Поле для сортировки
- * @apiParam {String="asc","desc"} [sortOrder="desc"] Порядок сортировки
- * @apiParam {Number} [limit=10] Количество элементов на странице
- * @apiParam {Number} [page=1] Номер страницы
- * @apiParam {String} [search] Поиск по названию блюда
- *
- * @apiSuccess {Object[]} dishes Список блюд
- * @apiSuccess {Number} total Общее количество блюд
- * @apiSuccess {Number} totalPages Общее количество страниц
- */
 
 export interface QueryParams {
   category?: string;
@@ -165,10 +145,24 @@ export const GetFilteredDishes = async (query: QueryParams) => {
   };
 };
 
-export const getFiveTopDish = async () =>
-  await prisma.dishes.findMany({
-    orderBy: {
-      rating: "desc",
-    },
-    take: 5,
-  });
+
+/**
+ * @api {get} /dishes Получить отфильтрованный список блюд
+ * @apiName GetFilteredDishes
+ * @apiGroup Dishes
+ *
+ * @apiParam {String} [category] Категория блюда
+ * @apiParam {Number} [minPrice] Минимальная цена
+ * @apiParam {Number} [maxPrice] Максимальная цена
+ * @apiParam {Boolean} [isVegan] Вегетарианское блюдо
+ * @apiParam {String} [restaurantId] ID ресторана
+ * @apiParam {String="price","rating","name","createdAt"} [sortBy="createdAt"] Поле для сортировки
+ * @apiParam {String="asc","desc"} [sortOrder="desc"] Порядок сортировки
+ * @apiParam {Number} [limit=10] Количество элементов на странице
+ * @apiParam {Number} [page=1] Номер страницы
+ * @apiParam {String} [search] Поиск по названию блюда
+ *
+ * @apiSuccess {Object[]} dishes Список блюд
+ * @apiSuccess {Number} total Общее количество блюд
+ * @apiSuccess {Number} totalPages Общее количество страниц
+ */

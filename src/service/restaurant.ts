@@ -18,10 +18,26 @@ export const createRestaurant = async (rest: Restaurants, userID: string) => {
 
 export const getAllRestaurant = async () => await prisma.restaurants.findMany();
 
-export const getTopRestaurant = async () =>
-  await prisma.restaurants.findMany({
-    orderBy: {
-      star: "desc",
-    },
-    take: 3,
-  });
+
+interface QueryParams {
+  
+}
+
+
+export const GetFilteredRestaurant = (params:QueryParams)=>{
+
+}
+
+
+
+
+
+
+
+// export const getTopRestaurant = async () =>
+//   await prisma.restaurants.findMany({
+//     orderBy: {
+//       star: "desc",
+//     },
+//     take: 3,
+//   });

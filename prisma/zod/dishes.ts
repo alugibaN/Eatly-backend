@@ -1,5 +1,4 @@
 import * as z from "zod"
-import { Categories } from ".prisma/client"
 import { CompleteRestaurants, RelatedRestaurantsModel, CompleteFavorites, RelatedFavoritesModel } from "./index"
 
 export const DishesModel = z.object({
@@ -10,7 +9,7 @@ export const DishesModel = z.object({
   price: z.number(),
   img: z.string(),
   restaurantID: z.string(),
-  category: z.nativeEnum(Categories).array(),
+  category: z.string(),
   updateAt: z.date(),
   createdAt: z.date(),
 })

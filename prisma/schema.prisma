@@ -68,6 +68,12 @@ model Favorites {
   @@unique([userID, dishID, restaurantID])
 }
 
+model Wallets {
+  id                  String            @id @default(cuid())
+  value               String
+  userID              String
+  user                User              @relation(fields: [userID], references: [id])
+}
 
 model Posts {
   id                  String            @id @default(cuid())
@@ -78,13 +84,6 @@ model Posts {
   autor               User              @relation(fields: [userID], references: [id])
   updateAt            DateTime          @updatedAt
   createdAt           DateTime          @default(now())
-}
-
-model Wallets {
-  id                  String            @id @default(cuid())
-  value               String
-  userID              String
-  user                User              @relation(fields: [userID], references: [id])
 }
 
 model Restaurants {
@@ -100,6 +99,21 @@ model Restaurants {
   createdAt           DateTime          @default(now())
 } 
 
+model Dishes {
+  id                  String            @id @default(cuid())
+  name                String           
+  deliveryTime        BigInt
+  rating              Float             
+  price               Float             
+  img                 String
+  restaurantID        String
+  category            String    
+  restaurant          Restaurants       @relation(fields: [restaurantID], references: [id])
+  updateAt            DateTime          @updatedAt
+  createdAt           DateTime          @default(now())
+  Favorites           Favorites[]
+}
+
 model Orders {
   id                  String            @id @default(cuid())
   order               Int               @default(autoincrement())
@@ -114,21 +128,6 @@ model Orders {
   createdAt           DateTime          @default(now())
 }
 
-model Dishes {
-  id                  String            @id @default(cuid())
-  name                String           
-  deliveryTime        BigInt
-  rating              Float             
-  price               Float             
-  img                 String
-  restaurantID        String
-  category            Categories[]    
-  restaurant          Restaurants       @relation(fields: [restaurantID], references: [id])
-  updateAt            DateTime          @updatedAt
-  createdAt           DateTime          @default(now())
-  Favorites           Favorites[]
-}
-
 enum Role {
   USER
   ADMIN
@@ -138,6 +137,7 @@ enum Gender {
   MEN
   WOMAN
 }
+
 enum DeliverStatus {
   inProcessing 
   delivered
@@ -150,7 +150,10 @@ enum Categories {
   Sushi
   Pizza
   Asian
-  Donat
-  Ice
-  Spacy
+  Donut
+  IceCream
+  Spicy
+  Pasta
+  Breakfasts
+  Lunches
 }
