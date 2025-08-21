@@ -28,13 +28,13 @@ export const getAllRestaurant = async (
   }
 };
 
-export const getTopRestaurant = async (
-  req: Request,
+export const GetFilteredRestaurant = async (
+  req: Request<{}, {}, {}, RestaurantService.QueryParams>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const rest = await RestaurantService.getTopRestaurant();
+    const rest = await RestaurantService.GetFilteredRestaurant(req.query);
     res.status(200).json(rest);
   } catch (err) {
     next(err);

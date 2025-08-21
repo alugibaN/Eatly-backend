@@ -40,15 +40,15 @@ export const updateDish = async (
   }
 };
 
-export const getFiveTopDish = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const dish = await ServiceDish.getFiveTopDish();
-    res.status(200).json(dish);
-  } catch (err) {
-    next(err);
-  }
-};
+// export const getFiveTopDish = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const dish = await ServiceDish.getFiveTopDish();
+//     res.status(200).json(dish);
+//   } catch (err) {
+//     next(err);
+//   }
+// };

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { createRestaurant, getAllRestaurant, getTopRestaurant } from "@/controller/restaurant";
+import { createRestaurant, getAllRestaurant, GetFilteredRestaurant } from "@/controller/restaurant";
 
 const restaurantRouter = Router();
 
 restaurantRouter.post("/", createRestaurant );
 restaurantRouter.get("/", getAllRestaurant );
-restaurantRouter.get("/top-restaurant", getTopRestaurant)
+restaurantRouter.get("/filter", GetFilteredRestaurant );
 
 
 export default restaurantRouter;

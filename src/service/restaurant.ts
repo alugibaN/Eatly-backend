@@ -30,7 +30,7 @@ export interface QueryParams {
 
 interface WhereParams {
   category?:     {};
-  restaurantID?: string;
+  id?:           string;
   limit?:        number;
   page?:         number;
   name?:         {};
@@ -59,8 +59,8 @@ export const GetFilteredRestaurant = async (query: QueryParams) => {
       contains: search,
     };
   }
-  
-  if (restaurantID) where.restaurantID = restaurantID;
+
+  if (restaurantID) where.id = restaurantID;
   let orderBy = {
     [sortBy]: sortOrder,
   };
@@ -76,6 +76,7 @@ export const GetFilteredRestaurant = async (query: QueryParams) => {
     }),
     prisma.restaurants.count({where})
   ])
+    const totalPages = Math.ceil(total / take);
 
    return {
     succes: true,
@@ -83,6 +84,7 @@ export const GetFilteredRestaurant = async (query: QueryParams) => {
     meta: {
       total,
       currentPage: page,
+      totalPages:totalPages,
       perPage: take,
     },
   };
