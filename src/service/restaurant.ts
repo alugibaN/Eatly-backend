@@ -18,21 +18,83 @@ export const createRestaurant = async (rest: Restaurants, userID: string) => {
 
 export const getAllRestaurant = async () => await prisma.restaurants.findMany();
 
+export interface QueryParams {
+  category?:     string;
+  restaurantID?: string;
+  sortBy:        "rating" | "deliveryTime";
+  sortOrder:     "desc" | "asc";
+  limit?:        number;
+  page?:         number;
+  search?:       string;
+}
 
-interface QueryParams {
+interface WhereParams {
+  category?:     {};
+  restaurantID?: string;
+  limit?:        number;
+  page?:         number;
+  name?:         {};
+}
+
+export const GetFilteredRestaurant = async (query: QueryParams) => {
+  const {
+    category,
+    restaurantID,
+    sortBy =  "rating",
+    sortOrder = "desc",
+    limit = 5,
+    page = 1,
+    search,
+  } = query;
+
+  const where: WhereParams = {};
+
+  if (category) {
+    where.category = {
+      contains: category,
+    };
+  }
+  if (search) {
+    where.name = {
+      contains: search,
+    };
+  }
   
-}
+  if (restaurantID) where.restaurantID = restaurantID;
+  let orderBy = {
+    [sortBy]: sortOrder,
+  };
+  const take = +limit;
+  const skip = (+page - 1) * limit;
+
+  const [rest, total] = await Promise.all([
+    prisma.restaurants.findMany({
+      where,
+      orderBy,
+      take,
+      skip,
+    }),
+    prisma.restaurants.count({where})
+  ])
+
+   return {
+    succes: true,
+    data: rest,
+    meta: {
+      total,
+      currentPage: page,
+      perPage: take,
+    },
+  };
 
 
-export const GetFilteredRestaurant = (params:QueryParams)=>{
-
-}
 
 
 
 
 
 
+};
 
 // export const getTopRestaurant = async () =>
 //   await prisma.restaurants.findMany({

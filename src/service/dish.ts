@@ -37,13 +37,13 @@ export const updateDish = async (dish: Dishes) => {
   return cheangeDish;
 };
 
-export interface MyQueryParams {
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  page?: string;
-  limit?: string;
-}
+// export interface MyQueryParams {
+//   category?: string;
+//   minPrice?: number;
+//   maxPrice?: number;
+//   page?: string;
+//   limit?: string;
+// }
 
 
 export interface QueryParams {
